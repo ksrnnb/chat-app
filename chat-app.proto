@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package chatpb;
 
-option go_package = "github.com/ksrnnb/chatpb";
+option go_package = "github.com/ksrnnb/chat-app-proto/chatpb";
 
 message Message {
     string id = 1;

@@ -1,4 +1,4 @@
-module github.com/ksrnnb/chatpb
+module github.com/ksrnnb/chat-app-proto
 
 go 1.16
 
