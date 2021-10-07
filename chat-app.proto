@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package chatpb;
 
-option go_package = "github.com/ksrnnb/chat-app-proto/chatpb";
+option go_package = "github.com/ksrnnb/chat-app/chatpb";
 
 message Message {
     string id = 1;
@@ -11,6 +11,13 @@ message Message {
     string message = 4;
     string sent_at = 5;
 }
+
+message GetMessagesRequest {}
+
+message GetMessagesResponse {
+    Message message = 1;
+}
+
 message CreateMessageRequest {
     Message message = 1;
 }
@@ -20,5 +27,6 @@ message CreateMessageResponse {
 }
 
 service ChatAppService {
+    rpc GetMessages (GetMessagesRequest) returns (stream GetMessagesResponse) {};
     rpc CreateMessage (CreateMessageRequest) returns (CreateMessageResponse) {};
 }

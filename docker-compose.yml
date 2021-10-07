@@ -1,0 +1,23 @@
+version: "3.8"
+services:
+  envoy:
+    build: ./envoy
+    ports:
+      - "8080:8080"
+
+  app:
+    build: "${PWD}/../chat-app-server/docker"
+    container_name: "server"
+    tty: true
+    volumes:
+      - "${PWD}/../chat-app-server:/var/app/"
+    ports:
+      - "9000:9000"
+
+  client:
+    build: "${PWD}/../chat-app-client/docker"
+    tty: true
+    volumes:
+      -  "${PWD}/../chat-app-client:/var/www/app"
+    ports:
+      - "3000:3000"
