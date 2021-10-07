@@ -94,5 +94,45 @@ export class ChatAppServiceClient {
     this.methodInfoCreateMessage);
   }
 
+  methodInfoHelloMessage = new grpcWeb.AbstractClientBase.MethodInfo(
+    chat$app_pb.HelloResponse,
+    (request: chat$app_pb.HelloRequest) => {
+      return request.serializeBinary();
+    },
+    chat$app_pb.HelloResponse.deserializeBinary
+  );
+
+  helloMessage(
+    request: chat$app_pb.HelloRequest,
+    metadata: grpcWeb.Metadata | null): Promise<chat$app_pb.HelloResponse>;
+
+  helloMessage(
+    request: chat$app_pb.HelloRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback: (err: grpcWeb.Error,
+               response: chat$app_pb.HelloResponse) => void): grpcWeb.ClientReadableStream<chat$app_pb.HelloResponse>;
+
+  helloMessage(
+    request: chat$app_pb.HelloRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback?: (err: grpcWeb.Error,
+               response: chat$app_pb.HelloResponse) => void) {
+    if (callback !== undefined) {
+      return this.client_.rpcCall(
+        this.hostname_ +
+          '/chatpb.ChatAppService/HelloMessage',
+        request,
+        metadata || {},
+        this.methodInfoHelloMessage,
+        callback);
+    }
+    return this.client_.unaryCall(
+    this.hostname_ +
+      '/chatpb.ChatAppService/HelloMessage',
+    request,
+    metadata || {},
+    this.methodInfoHelloMessage);
+  }
+
 }
 

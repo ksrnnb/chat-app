@@ -1,12 +1,16 @@
 version: "3.8"
 services:
   envoy:
-    build: ./envoy
+    build:
+      context: .
+      dockerfile: ./envoy/Dockerfile
     ports:
       - "8080:8080"
 
   app:
-    build: "${PWD}/../chat-app-server/docker"
+    build:
+      context: .
+      dockerfile: "${PWD}/../chat-app-server/docker/Dockerfile"
     container_name: "server"
     tty: true
     volumes:
@@ -15,7 +19,9 @@ services:
       - "9000:9000"
 
   client:
-    build: "${PWD}/../chat-app-client/docker"
+    build:
+      context: .
+      dockerfile: "${PWD}/../chat-app-client/docker/Dockerfile"
     tty: true
     volumes:
       -  "${PWD}/../chat-app-client:/var/www/app"
