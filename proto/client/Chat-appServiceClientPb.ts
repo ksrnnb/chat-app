@@ -35,6 +35,25 @@ export class ChatAppServiceClient {
     this.options_ = options;
   }
 
+  methodInfoGetMessages = new grpcWeb.AbstractClientBase.MethodInfo(
+    chat$app_pb.GetMessagesResponse,
+    (request: chat$app_pb.GetMessagesRequest) => {
+      return request.serializeBinary();
+    },
+    chat$app_pb.GetMessagesResponse.deserializeBinary
+  );
+
+  getMessages(
+    request: chat$app_pb.GetMessagesRequest,
+    metadata?: grpcWeb.Metadata) {
+    return this.client_.serverStreaming(
+      this.hostname_ +
+        '/chatpb.ChatAppService/GetMessages',
+      request,
+      metadata || {},
+      this.methodInfoGetMessages);
+  }
+
   methodInfoCreateMessage = new grpcWeb.AbstractClientBase.MethodInfo(
     chat$app_pb.CreateMessageResponse,
     (request: chat$app_pb.CreateMessageRequest) => {

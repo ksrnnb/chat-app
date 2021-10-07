@@ -36,6 +36,40 @@ export namespace Message {
   }
 }
 
+export class GetMessagesRequest extends jspb.Message {
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetMessagesRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: GetMessagesRequest): GetMessagesRequest.AsObject;
+  static serializeBinaryToWriter(message: GetMessagesRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetMessagesRequest;
+  static deserializeBinaryFromReader(message: GetMessagesRequest, reader: jspb.BinaryReader): GetMessagesRequest;
+}
+
+export namespace GetMessagesRequest {
+  export type AsObject = {
+  }
+}
+
+export class GetMessagesResponse extends jspb.Message {
+  getMessage(): Message | undefined;
+  setMessage(value?: Message): GetMessagesResponse;
+  hasMessage(): boolean;
+  clearMessage(): GetMessagesResponse;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetMessagesResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: GetMessagesResponse): GetMessagesResponse.AsObject;
+  static serializeBinaryToWriter(message: GetMessagesResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetMessagesResponse;
+  static deserializeBinaryFromReader(message: GetMessagesResponse, reader: jspb.BinaryReader): GetMessagesResponse;
+}
+
+export namespace GetMessagesResponse {
+  export type AsObject = {
+    message?: Message.AsObject,
+  }
+}
+
 export class CreateMessageRequest extends jspb.Message {
   getMessage(): Message | undefined;
   setMessage(value?: Message): CreateMessageRequest;

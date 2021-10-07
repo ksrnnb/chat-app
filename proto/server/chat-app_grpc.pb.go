@@ -18,6 +18,7 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ChatAppServiceClient interface {
+	GetMessages(ctx context.Context, in *GetMessagesRequest, opts ...grpc.CallOption) (ChatAppService_GetMessagesClient, error)
 	CreateMessage(ctx context.Context, in *CreateMessageRequest, opts ...grpc.CallOption) (*CreateMessageResponse, error)
 }
 
@@ -27,6 +28,38 @@ type chatAppServiceClient struct {
 
 func NewChatAppServiceClient(cc grpc.ClientConnInterface) ChatAppServiceClient {
 	return &chatAppServiceClient{cc}
+}
+
+func (c *chatAppServiceClient) GetMessages(ctx context.Context, in *GetMessagesRequest, opts ...grpc.CallOption) (ChatAppService_GetMessagesClient, error) {
+	stream, err := c.cc.NewStream(ctx, &ChatAppService_ServiceDesc.Streams[0], "/chatpb.ChatAppService/GetMessages", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &chatAppServiceGetMessagesClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type ChatAppService_GetMessagesClient interface {
+	Recv() (*GetMessagesResponse, error)
+	grpc.ClientStream
+}
+
+type chatAppServiceGetMessagesClient struct {
+	grpc.ClientStream
+}
+
+func (x *chatAppServiceGetMessagesClient) Recv() (*GetMessagesResponse, error) {
+	m := new(GetMessagesResponse)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
 }
 
 func (c *chatAppServiceClient) CreateMessage(ctx context.Context, in *CreateMessageRequest, opts ...grpc.CallOption) (*CreateMessageResponse, error) {
@@ -42,6 +75,7 @@ func (c *chatAppServiceClient) CreateMessage(ctx context.Context, in *CreateMess
 // All implementations must embed UnimplementedChatAppServiceServer
 // for forward compatibility
 type ChatAppServiceServer interface {
+	GetMessages(*GetMessagesRequest, ChatAppService_GetMessagesServer) error
 	CreateMessage(context.Context, *CreateMessageRequest) (*CreateMessageResponse, error)
 	mustEmbedUnimplementedChatAppServiceServer()
 }
@@ -50,6 +84,9 @@ type ChatAppServiceServer interface {
 type UnimplementedChatAppServiceServer struct {
 }
 
+func (UnimplementedChatAppServiceServer) GetMessages(*GetMessagesRequest, ChatAppService_GetMessagesServer) error {
+	return status.Errorf(codes.Unimplemented, "method GetMessages not implemented")
+}
 func (UnimplementedChatAppServiceServer) CreateMessage(context.Context, *CreateMessageRequest) (*CreateMessageResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateMessage not implemented")
 }
@@ -64,6 +101,27 @@ type UnsafeChatAppServiceServer interface {
 
 func RegisterChatAppServiceServer(s grpc.ServiceRegistrar, srv ChatAppServiceServer) {
 	s.RegisterService(&ChatAppService_ServiceDesc, srv)
+}
+
+func _ChatAppService_GetMessages_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(GetMessagesRequest)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(ChatAppServiceServer).GetMessages(m, &chatAppServiceGetMessagesServer{stream})
+}
+
+type ChatAppService_GetMessagesServer interface {
+	Send(*GetMessagesResponse) error
+	grpc.ServerStream
+}
+
+type chatAppServiceGetMessagesServer struct {
+	grpc.ServerStream
+}
+
+func (x *chatAppServiceGetMessagesServer) Send(m *GetMessagesResponse) error {
+	return x.ServerStream.SendMsg(m)
 }
 
 func _ChatAppService_CreateMessage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -96,6 +154,12 @@ var ChatAppService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _ChatAppService_CreateMessage_Handler,
 		},
 	},
-	Streams:  []grpc.StreamDesc{},
+	Streams: []grpc.StreamDesc{
+		{
+			StreamName:    "GetMessages",
+			Handler:       _ChatAppService_GetMessages_Handler,
+			ServerStreams: true,
+		},
+	},
 	Metadata: "chat-app.proto",
 }
