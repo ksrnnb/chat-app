@@ -1,5 +1,15 @@
 version: "3.8"
 services:
+  client:
+    build:
+      context: .
+      dockerfile: "${PWD}/../chat-app-client/docker/Dockerfile"
+    tty: true
+    volumes:
+      -  "${PWD}/../chat-app-client:/var/www/app"
+    ports:
+      - "3000:3000"
+
   envoy:
     build:
       context: .
@@ -17,13 +27,19 @@ services:
       - "${PWD}/../chat-app-server:/var/app/"
     ports:
       - "9000:9000"
+    depends_on:
+      - db
 
-  client:
-    build:
+  db:
+    build: 
       context: .
-      dockerfile: "${PWD}/../chat-app-client/docker/Dockerfile"
-    tty: true
-    volumes:
-      -  "${PWD}/../chat-app-client:/var/www/app"
+      dockerfile: ./db/Dockerfile
+    restart: always
     ports:
-      - "3000:3000"
+      - 3306:3306
+    volumes:
+      - ./db:/var/lib/mysql
+    environment:
+      - MYSQL_DATABASE=chat
+      - MYSQL_ROOT_PASSWORD=password
+      - TZ=Asia/Tokyo
