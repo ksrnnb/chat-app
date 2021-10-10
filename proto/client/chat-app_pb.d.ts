@@ -169,8 +169,8 @@ export namespace LoginRequest {
 }
 
 export class LoginResponse extends jspb.Message {
-  getCsrfToken(): string;
-  setCsrfToken(value: string): LoginResponse;
+  getMessage(): string;
+  setMessage(value: string): LoginResponse;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): LoginResponse.AsObject;
@@ -182,7 +182,7 @@ export class LoginResponse extends jspb.Message {
 
 export namespace LoginResponse {
   export type AsObject = {
-    csrfToken: string,
+    message: string,
   }
 }
 

@@ -1469,7 +1469,7 @@ proto.chatpb.LoginResponse.prototype.toObject = function(opt_includeInstance) {
  */
 proto.chatpb.LoginResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
-    csrfToken: jspb.Message.getFieldWithDefault(msg, 1, "")
+    message: jspb.Message.getFieldWithDefault(msg, 1, "")
   };
 
   if (includeInstance) {
@@ -1508,7 +1508,7 @@ proto.chatpb.LoginResponse.deserializeBinaryFromReader = function(msg, reader) {
     switch (field) {
     case 1:
       var value = /** @type {string} */ (reader.readString());
-      msg.setCsrfToken(value);
+      msg.setMessage(value);
       break;
     default:
       reader.skipField();
@@ -1539,7 +1539,7 @@ proto.chatpb.LoginResponse.prototype.serializeBinary = function() {
  */
 proto.chatpb.LoginResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = message.getCsrfToken();
+  f = message.getMessage();
   if (f.length > 0) {
     writer.writeString(
       1,
@@ -1550,10 +1550,10 @@ proto.chatpb.LoginResponse.serializeBinaryToWriter = function(message, writer) {
 
 
 /**
- * optional string csrf_token = 1;
+ * optional string message = 1;
  * @return {string}
  */
-proto.chatpb.LoginResponse.prototype.getCsrfToken = function() {
+proto.chatpb.LoginResponse.prototype.getMessage = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
@@ -1562,7 +1562,7 @@ proto.chatpb.LoginResponse.prototype.getCsrfToken = function() {
  * @param {string} value
  * @return {!proto.chatpb.LoginResponse} returns this
  */
-proto.chatpb.LoginResponse.prototype.setCsrfToken = function(value) {
+proto.chatpb.LoginResponse.prototype.setMessage = function(value) {
   return jspb.Message.setProto3StringField(this, 1, value);
 };
 

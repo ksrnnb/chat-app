@@ -40,7 +40,7 @@ message LoginRequest {
 }
 
 message LoginResponse {
-    string csrf_token = 1;
+    string message = 1;
 }
 
 service ChatAppService {
