@@ -44,7 +44,7 @@ $ docker-compose exec app ash
 シェルスクリプトを実行すると、コード生成される。
 
 ```bash
-. generate.sh
+$ . generate.sh
 ```
 
 ただし、以下のインストールが必要となるので注意。
