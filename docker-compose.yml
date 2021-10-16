@@ -10,13 +10,6 @@ services:
     ports:
       - "3000:3000"
 
-  envoy:
-    build:
-      context: .
-      dockerfile: ./envoy/Dockerfile
-    ports:
-      - "8080:8080"
-
   app:
     build:
       context: .
