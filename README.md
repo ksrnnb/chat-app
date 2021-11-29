@@ -35,5 +35,5 @@ $ docker-compose exec client ash
   => npm run start
 
 $ docker-compose exec app ash
-  => go run server.go
+  => go run main.go
 ```
